@@ -13,6 +13,10 @@ function child_remove_parent_function() {
     add_action('admin_menu', 'patched_misfit_add_admin');
     remove_action('wp_ajax_of_ajax_post_action', 'of_ajax_callback');
     add_action('wp_ajax_of_ajax_post_action', 'patched_of_ajax_callback');
+    wp_dequeue_script('execute');
+    wp_enqueue_script('execute', get_stylesheet_directory_uri() . '/js/execute.js',array('jquery'));
+    wp_dequeue_script('lightbox');  
+    wp_enqueue_script('lightbox', get_stylesheet_directory_uri() . '/js/lightbox.min.js');
 }
 add_action( 'wp_loaded', 'child_remove_parent_function' );
 
@@ -121,6 +125,7 @@ endif; // feature_img_url ()
 
 if ( ! function_exists( 'include_banner' ) ) :
 function include_banner () {
+    global $post;
     $page_type = get_post_meta($post->ID, 'misfit_pagetype', true);
     switch ($page_type) {
         case "Top Banner":
@@ -166,7 +171,6 @@ function load_stylesheets () {
 	}
     
 	echo '<!-- responsive style -->';
-// 	wp_enqueue_style('misfit-media', get_template_directory_uri() . '/css/media.css');
     wp_enqueue_script('modernizr', get_template_directory_uri() . '/js/modernizr.custom.js');
     
     /****************** DO NOT REMOVE **********************
@@ -186,8 +190,52 @@ if ( ! function_exists( 'load_primary_stylesheets' ) ) :
 function load_primary_stylesheets () {
     wp_enqueue_style( 'style', get_stylesheet_uri() ); 
     wp_enqueue_style('misfit-media', get_template_directory_uri() . '/css/media.css');
+    wp_enqueue_script ('jquery');
 }
 endif; // load_primary_stylesheets ()
 
+if ( ! function_exists( 'feedburner_url' ) ) :
+/*  */
+function feedburner_url () {
+    if ( get_option('misfit_feedburner_url') <> "" ) { 
+        echo get_option('misfit_feedburner_url'); 
+    } else { 
+        echo get_bloginfo_rss('rss2_url'); 
+    }
+}
+endif; // feedburner_url ()
+
+if ( ! function_exists( 'footer_setup' ) ) :
+/*  */
+function footer_setup () {
+    get_template_part ('library/mobile-nav');
+    wp_enqueue_script ('preloader', get_template_directory_uri() . '/js/preloader.js');
+
+    
+    if( (is_home() && get_option('misfit_hometype') == "2") || ( is_page() && is_page_template('hp_slide.php') ) ) { 
+        wp_enqueue_script('supersized', get_template_directory_uri() . '/js/supersized.3.2.7.min.js');
+        wp_enqueue_script('supersized-shutter', get_template_directory_uri() . '/js/supersized.shutter.min.js');
+		get_template_part ('library/images');
+    }
+    if ( is_home() && get_option('misfit_hometype') == "3" || is_page_template('hp_vid.php') ) { 
+        get_template_part('library/home-video');
+    }
+    if ( get_option('misfit_instagramid') ) { get_template_part ('library/insta'); }
+    if ( get_option('misfit_consumer_key') ) { get_template_part ('library/tweets'); }
+    if ( is_page_template('page_cs.php') ) { get_template_part ('library/countdown'); } 
+    
+    wp_enqueue_script('jquery-iosslider', get_template_directory_uri() . '/js/jquery.iosslider.js');
+    wp_enqueue_script('view', get_template_directory_uri() . '/js/view.js');
+    wp_enqueue_script('lightbox', get_template_directory_uri() . '/js/lightbox.min.js');
+    wp_enqueue_script('execute', get_template_directory_uri() . '/js/execute.js', array('jquery'));
+    wp_enqueue_script('jquery-touchcarousel', get_template_directory_uri() . '/js/jquery.touchcarousel-1.2.js');
+    wp_enqueue_script('jquery-sticky-kit', get_template_directory_uri() . '/js/jquery.sticky-kit.js');
+    wp_enqueue_script('stick', get_template_directory_uri() . '/js/stick.js');
+    
+//     if (is_home() && get_option('misfit_hometype') == "1") { wp_enqueue_script('main', get_template_directory_uri() . '/js/main.js'); }
+    if ( get_option('misfit_tracking_code') <> "" ) { echo stripslashes(get_option('misfit_tracking_code')); }
+}
+add_action('wp_footer', 'footer_setup');
+endif; // footer_setup ()
 
 ?>

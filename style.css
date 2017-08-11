@@ -59,4 +59,27 @@
 	top: 0;
     left: 0;
     z-index: -1;
+    -webkit-transition: opacity .8s ease !important;
+    -moz-transition: opacity .8s ease !important;
+    -o-transition: opacity .8s ease !important;
+    transition: opacity .8 ease !important;
+    opacity:1;
+}
+
+.stage {
+  width: 100% !important;
+  margin-left: 60px;
+  position: relative;
+ -webkit-transition: margin-left .8s ease !important;
+  -moz-transition: margin-left .8s ease !important;
+  -o-transition: margin-left .8s ease !important;
+  transition: margin-left .8s ease !important;
+  z-index: 2;
+  background: #fff;
+}
+
+.navopen .home-feature #feature-img {
+    opacity: 0;
+    width: 100%;
+    z-index: 9999999999;
 }

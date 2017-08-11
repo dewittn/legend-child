@@ -52,11 +52,11 @@
 	
 	<div class="footer">
 
-		<?php if (get_option('misfit_instagramtok') && get_option('misfit_instagramid')) { ?>
+		<?php if (get_option('misfit_instagramtok') && get_option('misfit_instagramid')) : ?>
 
 			<div id="instafeed"></div>
 
-		<?php } ?>    
+		<?php endif; ?>    
 
 		<div class="clear"></div>
 
@@ -135,8 +135,7 @@
 
 </div><!-- end big search -->
 
-	<?php if(get_option('misfit_infobox') == "Select a page:" || get_option('misfit_infobox') == "" ) { ?>
-	<?php } else { ?>
+	<?php if(get_option('misfit_infobox') != "Select a page:" && get_option('misfit_infobox') != "" ) : ?>
 
 		<div class="biginfo pagecontent">
 
@@ -185,51 +184,13 @@
 
 		</div>
 
-	<?php } ?>
+	<?php endif; ?>
 
 	<div class="hidden-side">
 
-		<?php include(TEMPLATEPATH . '/library/tabs.php'); ?>
+		<?php get_template_part ('library/tabs'); ?>
 
 	</div><!--end hidden -->
-
-	<?php include(TEMPLATEPATH . '/library/mobile-nav.php'); ?>
-
-	<script src="<?php bloginfo ('template_url'); ?>/js/preloader.js" type="text/javascript"></script>
-
-	<?php if( (is_home() && get_option('misfit_hometype') == "2") || ( is_page() && is_page_template('hp_slide.php') ) ) { ?>
-
-		<script type="text/javascript" src="<?php bloginfo ('template_url'); ?>/js/supersized.3.2.7.min.js"></script>
-		<script type="text/javascript" src="<?php bloginfo ('template_url'); ?>/js/supersized.shutter.min.js"></script>
-		<?php include (TEMPLATEPATH . '/js/images.php');?>
-
-	<?php } ?>
-
-	<?php if(is_home() && get_option('misfit_hometype') == "3" || is_page_template('hp_vid.php') ) { ?>
-		<?php include (TEMPLATEPATH . '/js/home-video.php');?>
-	<?php } ?>
-
-	<?php if(get_option('misfit_instagramid')) { ?>
-		<?php include (get_stylesheet_directory() . '/js/insta.php');?>
-	<?php } ?>
-
-	<?php if(get_option('misfit_consumer_key')) { ?>
-		<?php include (TEMPLATEPATH . '/js/tweets.php');?>
-	<?php } ?>
-
-	<?php if ( is_page_template('page_cs.php') ) { ?>
-		<?php include (TEMPLATEPATH . '/library/countdown.php');?>
-	<?php } ?>
-
-	<script src = "<?php bloginfo ('template_url'); ?>/js/jquery.iosslider.js"></script>
-	<script src="<?php bloginfo ('template_url'); ?>/js/view.js" type="text/javascript"></script>
-	<script src="<?php bloginfo ('stylesheet_directory'); ?>/js/lightbox.min.js"></script>
-	<script type="text/javascript" src="<?php bloginfo ('stylesheet_directory'); ?>/js/execute.js"></script>
-	<script src="<?php bloginfo ('template_url'); ?>/js/jquery.touchcarousel-1.2.js"></script> 
-	<script src="<?php bloginfo ('template_url'); ?>/js/jquery.sticky-kit.js"></script>
-	<script src="<?php bloginfo ('template_url'); ?>/js/stick.js"></script>   
-
-	<?php if ( get_option('misfit_tracking_code') <> "" ) { echo stripslashes(get_option('misfit_tracking_code')); } ?>
 
 	<?php wp_footer(); ?>
 </body>

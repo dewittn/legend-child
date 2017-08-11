@@ -19,7 +19,7 @@
 	<meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes" />
 	<link rel="profile" href="http://gmpg.org/xfn/11" />
 	<link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
-	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="<?php if ( get_option('misfit_feedburner_url') <> "" ) { echo get_option('misfit_feedburner_url'); } else { echo get_bloginfo_rss('rss2_url'); } ?>" />
+	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="<?php feedburner_url (); ?>" />
 	<?php load_primary_stylesheets(); ?>
 	
 	<style type="text/css">
@@ -61,7 +61,7 @@
 				
 			<?php if(is_home()) {
     			    get_home_intro(); 
-    			} elseif (!is_category() || !is_archive() || !is_author() || !is_tag() || !is_search()) {
+    			} elseif (!is_category() && !is_archive() && !is_author() && !is_tag() && !is_search()) {
                     include_banner ();
                 }
             ?>			

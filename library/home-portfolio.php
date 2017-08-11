@@ -11,11 +11,10 @@
 				<?php 
 					
 					$counter = 1;
-					$postcount = get_option('misfit_portcount');
-					$scunt = 12; 
+					$postcount = 13; //default_value(get_option('misfit_portcount'), 12);
 					$args = array(
 								'post_type' => 'project',
-								'posts_per_page' => $scunt,
+								'posts_per_page' => $postcount,
 								'orderby' => 'date',
 								'order'   => 'ASC',
 								'tax_query' => array(
@@ -29,7 +28,7 @@
 	         		$my_query = new WP_Query($args); if(have_posts()) : while($my_query->have_posts()) : $my_query->the_post(); 
 	         		$imgsrc = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), "portfolio"); 
 	         		$imgsrc2 = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), "portfolio-large");
-	         		if($counter == 5 || $counter == 9){
+	         		if($counter == 4 || $counter == 10){
 		         		$port_class = "port wideport";
 		         		$port_img = $imgsrc2[0];
 	         		} else {
@@ -62,11 +61,10 @@
 				<?php 
 					
 					$counter = 1;
-					$postcount = get_option('misfit_portcount');
-					$scunt = 4; 
+					$postcount = 4; //default_value(get_option('misfit_portcount'), 12); 
 					$args = array(
 								'post_type' => 'project',
-								'posts_per_page' => $scunt,
+								'posts_per_page' => $$postcount,
 								'tax_query' => array(
 									array(
 										'taxonomy' => 'type',
