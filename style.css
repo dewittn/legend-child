@@ -1,0 +1,62 @@
+/*
+	Theme Name: Legend-child
+	Template: legend
+	Theme URI: https://misfitthemes.com/legend/
+	Author: Misfit Inc
+	Author URI: http://misfit.co
+	Description: A limited edition, artisan Wordpress theme made for rabble rousers, troublemakers and general riff raff.
+	Version: 1.0
+	License: GNU General Public License v2 or later
+	License URI: http://www.gnu.org/licenses/gpl-2.0.html
+*/
+
+
+@import url("../legend/style.css");
+
+/*----------------------------------------------------------------------------------------------------------------
+										     PRELOADER
+----------------------------------------------------------------------------------------------------------------*/
+
+
+#preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #fff;
+  z-index: 999999999999999999;
+}
+
+#status {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  background-image: url(images/loading-henry.gif);
+  background-repeat: no-repeat;
+  background-position: center center;
+  margin: 0;
+}
+
+
+#icing .home-feature {
+    position: relative !important;
+    height: 85vh !important;
+}
+
+.home-feature:after {
+	clear: both;
+}
+
+#feature-img {
+	position: fixed; 
+	width: 100%; 
+	height: 100%; 
+	object-fit: cover;
+	will-change: transform;
+	top: 0;
+    left: 0;
+    z-index: -1;
+}
