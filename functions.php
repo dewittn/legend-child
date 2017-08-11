@@ -143,6 +143,9 @@ function custom_preloader () {
 endif; // custom_preloader ()
 
 if ( ! function_exists( 'load_stylesheets' ) ) :
+/*
+    This function adds the rest of the stylesheets into wp_head(), allowing them to be optimized by wordpress.
+*/
 function load_stylesheets () {
     
     echo '<!-- fonts style -->';
@@ -163,7 +166,7 @@ function load_stylesheets () {
 	}
     
 	echo '<!-- responsive style -->';
-	wp_enqueue_style('media', get_template_directory_uri() . '/css/media.css');
+// 	wp_enqueue_style('misfit-media', get_template_directory_uri() . '/css/media.css');
     wp_enqueue_script('modernizr', get_template_directory_uri() . '/js/modernizr.custom.js');
     
     /****************** DO NOT REMOVE **********************
@@ -175,5 +178,16 @@ function load_stylesheets () {
 }
 add_action('wp_head', 'load_stylesheets');
 endif; // load_stylesheets ()
+
+if ( ! function_exists( 'load_primary_stylesheets' ) ) :
+/*
+    This functions loads the style.css and media.css first so that the site does not look broken while the rest of the site loads.
+*/
+function load_primary_stylesheets () {
+    wp_enqueue_style( 'style', get_stylesheet_uri() ); 
+    wp_enqueue_style('misfit-media', get_template_directory_uri() . '/css/media.css');
+}
+endif; // load_primary_stylesheets ()
+
 
 ?>
