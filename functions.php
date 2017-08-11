@@ -181,7 +181,7 @@ endif; // load_stylesheets ()
 
 if ( ! function_exists( 'load_primary_stylesheets' ) ) :
 /*
-    This functions loads the style.css and media.css first so that the site does not look broken while the rest of the site loads.
+    This functions places style.css and media.css at the top of the page so that the site does not look broken while it loads.
 */
 function load_primary_stylesheets () {
     wp_enqueue_style( 'style', get_stylesheet_uri() ); 

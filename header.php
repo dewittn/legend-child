@@ -20,7 +20,7 @@
 	<link rel="profile" href="http://gmpg.org/xfn/11" />
 	<link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
 	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="<?php if ( get_option('misfit_feedburner_url') <> "" ) { echo get_option('misfit_feedburner_url'); } else { echo get_bloginfo_rss('rss2_url'); } ?>" />
-	<?php wp_enqueue_style( 'style', get_stylesheet_uri() ); wp_enqueue_style('misfit-media', get_template_directory_uri() . '/css/media.css'); ?>
+	<?php load_primary_stylesheets(); ?>
 	
 	<style type="text/css">
 	    .is_stuck{
@@ -30,11 +30,11 @@
 	
  	<style type="text/css">
     	<?php echo stripslashes(get_option('misfit_custom_css'));   ?>
-    	<?php if(!get_option('misfit_deflinenothree') || !get_option('misfit_deflinenothree') || !get_option('misfit_deflinenothree')) { ?>
+    	<?php if(!get_option('misfit_deflinenothree') || !get_option('misfit_deflinenothree') || !get_option('misfit_deflinenothree')) : ?>
     		.feature-holster {
 			   top: 53%;
     		}
-    	<?php } ?>
+    	<?php endif; ?>
     </style>    
         
 	<?php wp_head(); ?>
