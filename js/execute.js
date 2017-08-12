@@ -174,7 +174,9 @@ $(document).ready(function()  {
     });
     // $(window).resize(function(){location.reload();});
 	
-	$(".theslip").stick_in_parent({ offset_top: 350,sticky_class : "vislip" });
+	if ($(".theslip")) {
+    	$(".theslip").stick_in_parent({ offset_top: 350,sticky_class : "vislip" });
+	}
 	
 	// NAVIGATION OPEN AND CLOSE
    $(".bar-holster").click(function(e){
@@ -359,9 +361,10 @@ $(document).ready(function()  {
 }); // End $(document).ready
 
 $(window).load(function() {
-		
-    $('.topslide').iosSlider({ desktopClickDrag: true, scrollbar: true, scrollbarDrag: true, responsiveSlides: true, responsiveSlideContainer: true, keyboardControls: true, scrollbarLocation: 'bottom', autoSlide: true, autoSlideTimer: 2000, navNextSelector: $('#nextSlide'), navPrevSelector: $('#previousSlide'), });
-
+    if ($('.topslide')) {
+        $('.topslide').iosSlider({ desktopClickDrag: true, scrollbar: true, scrollbarDrag: true, responsiveSlides: true, responsiveSlideContainer: true, keyboardControls: true, scrollbarLocation: 'bottom', autoSlide: true, autoSlideTimer: 2000, navNextSelector: $('#nextSlide'), navPrevSelector: $('#previousSlide'), });
+    }
+    
     $(".touchcarousel").touchCarousel({				
 		itemsPerPage: 1,	
 		autoplay: true,
