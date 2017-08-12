@@ -1,5 +1,7 @@
 <section class="home-feature singleimage">
-	<img id="feature-img" src="<?php feature_img_url(); ?>">
+
+		<img id="feature-img" src="<?php feature_img_url(); ?>">
+	
         <div class="feature-holster">
 
             <div class="container">
