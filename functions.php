@@ -17,12 +17,45 @@ function child_remove_parent_function() {
     wp_enqueue_script('execute', get_stylesheet_directory_uri() . '/js/execute.js',array('jquery','jquery-sticky-kit'));
     wp_dequeue_script('lightbox');  
     wp_enqueue_script('lightbox', get_stylesheet_directory_uri() . '/js/lightbox.min.js', array('jquery'));
+    remove_shortcode('video');
+    add_shortcode('video', 'modified_scribe_video_sc');
 /*
     wp_dequeue_script('misfit-media');
     wp_enqueue_style('misfit-media', get_stylesheet_directory_uri() . '/css/media.css');
 */
 }
 add_action( 'wp_loaded', 'child_remove_parent_function' );
+
+
+
+/* -------------------------------------------------- */
+/*	Video Embed
+/* -------------------------------------------------- */
+
+
+function modified_scribe_video_sc( $atts, $content = null ) {
+
+	extract( shortcode_atts( array(
+		'youtube' => '',
+		'vimeo'   => '',
+	), $atts ) );
+	
+	$output = '<div class="videobox"><div class="video-container">';
+	
+	if( $youtube )
+		$output .= '<iframe width="720" height="394" src="https://www.youtube.com/embed/'. esc_attr( $youtube )  .'" allowfullscreen></iframe>';
+		
+	if($vimeo)	
+		$output .= '<iframe src="https://player.vimeo.com/video/'. esc_attr( $vimeo )  .'" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
+	
+	if($content)
+		$output .= ''. $content  .'';
+
+	$output .= '</div></div>';
+
+	return $output;
+
+}
 
 
 
