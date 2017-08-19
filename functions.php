@@ -19,6 +19,8 @@ function child_remove_parent_function() {
     wp_enqueue_script('lightbox', get_stylesheet_directory_uri() . '/js/lightbox.min.js', array('jquery'));
     remove_shortcode('video');
     add_shortcode('video', 'modified_scribe_video_sc');
+    remove_shortcode('accordion_content');
+    add_shortcode('accordion_content', 'modified_accordion_content_sc');
 /*
     wp_dequeue_script('misfit-media');
     wp_enqueue_style('misfit-media', get_stylesheet_directory_uri() . '/css/media.css');
@@ -57,6 +59,30 @@ function modified_scribe_video_sc( $atts, $content = null ) {
 
 }
 
+
+/* -------------------------------------------------- */
+/*	Accordion Content
+/* -------------------------------------------------- */
+
+function modified_accordion_content_sc( $atts, $content = null ) {
+
+	extract( shortcode_atts( array(
+		'title'      => '',
+		'title_size' => 'span',
+		'icon'       => '',
+		'mode'       => ''
+	), $atts ) );
+
+    $output = '<ul id="toggle-view"><li><h3>';
+    
+    if( $icon )
+        $output .= '<i class="fa '. esc_attr( $icon )  .'" aria-hidden="true"></i> ';
+
+	$output .=  esc_attr( $title ) . '</h3><div class="panel"><p>' . do_shortcode( $content ) . '<p></div></li></ul>';
+	
+	return $output;
+
+}
 
 
 //.................. Nelson's New Functions .................. //
