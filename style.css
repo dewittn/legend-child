@@ -101,11 +101,3 @@
     box-shadow: 0 0 4px #888;
     z-index: 9999999999;
 }
-
-.panel {
-    min-height: 390px;
-}
-
-.panel p {
-    position: absolute;
-}
