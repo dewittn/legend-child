@@ -28,7 +28,15 @@ function child_remove_parent_function() {
 }
 add_action( 'wp_loaded', 'child_remove_parent_function' );
 
+function custom_myme_types($mime_types){
 
+    //Adding epub extension
+    $mime_types['epub'] = 'application/epub+zip'; 
+
+    return $mime_types;
+}
+
+add_filter('upload_mimes', 'custom_myme_types', 1, 1);
 
 /* -------------------------------------------------- */
 /*	Video Embed
