@@ -94,13 +94,10 @@ get_header(); ?>
 
 		<?php include (get_stylesheet_directory() . '/library/page_variations/basefull.php'); ?>
 
-
 	<?php } ?>
-	
-	
+		
 	<!-- home blog  -->
 	<?php include(TEMPLATEPATH . '/library/relational_blog-none.php'); ?>		    
 
-		  
 
 <?php get_footer(); ?>
