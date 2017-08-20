@@ -1,4 +1,4 @@
-<section class="blogroll">
+<section class="blogroll home-blog">
 
 	<div class="theslip"><?php echo default_value(get_option('misfit_bloglabel'), "Essays") ?></div>
 
