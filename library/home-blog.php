@@ -2,7 +2,7 @@
 
 	<div class="theslip"><?php echo default_value(get_option('misfit_bloglabel'), "Essays") ?></div>
 
-    <div class="container">
+    <div class="container pagecontent">
 
         <h1 id="my-work" class="bigheading" >Essays & Articles</h1>
 
