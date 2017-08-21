@@ -8,8 +8,7 @@
 <?php if(get_option('misfit_showsignup') == "true") { ?>
 
 	<div class="signupform">
-
-		<h4><?php echo get_option('misfit_signuptitle'); ?></h4>
+		<h4 id="email-signup"><?php echo get_option('misfit_signuptitle'); ?></h4>
 
 		<!-- Begin MailChimp Signup Form -->
 		<div id="mc_embed_signup" class="container">

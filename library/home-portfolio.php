@@ -4,7 +4,7 @@
 
     <div class="pagecontent container">
 
-		<h1 class="bigheading" >My Work</h1>
+		<h1 id="my-work" class="bigheading" >My Work</h1>
 		
         <div class="portfolio-roll">
 
@@ -55,7 +55,7 @@
 
         </div><!-- end portroll -->
 
-		<h1 class="bigheading">My Art</h1>
+		<h1 id="my-art" class="bigheading">My Art</h1>
         <div class="portfolio-roll">
 
 				<?php 
