@@ -54,7 +54,7 @@
                 <?php if(get_option('misfit_infobox') != "Select a page:" && get_option('misfit_infobox') != "" ) : ?>
                     <a href="#" class="info"><i class="fa fa-info" aria-hidden="true"></i></a>
                 <?php endif; ?>
-                <a href="<?php get_home_url(); ?>" class="home"><i class="fa fa-home" aria-hidden="true"></i></a>
+                <a href="<?php echo esc_url(get_home_url()); ?>" class="home"><i class="fa fa-home" aria-hidden="true"></i></a>
             </div><!-- end fixed nav -->
 			
 			<?php get_template_part ('library/sidenav'); ?>
