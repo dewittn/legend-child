@@ -65,8 +65,11 @@ get_header(); ?>
 							<?php } ?>
 
 						</div>
-
-						<a href="<?php the_permalink(); ?>" class="std"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
+                        <?php if($custom_url) { ?>
+                        	<a href="<?php echo $custom_url; ?>" class="std"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
+                        <?php } else { ?>
+                        	<a href="<?php the_permalink(); ?>" class="std"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
+                        <?php } ?>
 
 					</div><!--end post snip -->
 
