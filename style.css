@@ -101,3 +101,31 @@
     box-shadow: 0 0 4px #888;
     z-index: 9999999999;
 }
+
+.post-snip {
+    -webkit-transition: opacity .8s ease !important;
+    -moz-transition: opacity .8s ease !important;
+    -o-transition: opacity .8s ease !important;
+    transition: opacity .8s ease !important;
+}
+
+.port {
+  -webkit-transition: opacity .5s ease !important;
+  -moz-transition: opacity .5s ease !important;
+  -o-transition: opacity .5s ease !important;
+  transition: opacity .5s ease !important;
+}
+
+.wager {
+  -webkit-transition: opacity .3s ease !important;
+  -moz-transition: opacity .3s ease !important;
+  -o-transition: opacity .3s ease !important;
+  transition: opacity .3s ease !important;
+}
+
+.portfol {
+    -webkit-transition: opacity .8s ease !important;
+    -moz-transition: opacity .8s ease !important;
+    -o-transition: opacity .8s ease !important;
+    transition: opacity .8s ease !important;
+}
