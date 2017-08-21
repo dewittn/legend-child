@@ -4,7 +4,7 @@
 
     <div class="container">
 
-        <div class="divider"></div>
+        <h1 id="my-work" class="bigheading" >Essays & Articles</h1>
 
         <div class="highroll">
 

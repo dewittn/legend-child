@@ -1,4 +1,34 @@
 // Nelson's modified execute.js
+
+// Add GA Tracking code
+$(document).ready(function() {
+    if(window.ga && ga.create) {
+    
+        // PDF Download
+        if ($('#chpt1-pdf')) { 
+            $('#chpt1-pdf').click(function(){ 
+                ga('send', 'event', 'Chapter 1', 'Download', 'PDF', '1'); 
+            });
+        }
+        
+        // ePub Download
+        if ($('#chpt1-epub')) { 
+            $('#chpt1-epub').click(function(){ 
+                ga('send', 'event', 'Chapter 1', 'Download', 'ePub', '1'); 
+            });
+        }
+        
+        // Test Event
+        if ($('#test-event')) { 
+            $('#test-event').click(function(){ 
+                ga('send', 'event', 'Test', 'Link', 'Click', '1'); 
+            });
+        }
+    
+    }
+}
+
+
 function thirty_pc() {
     var height = $(window).height();
     var thirtypc = (95 * height) / 100;
