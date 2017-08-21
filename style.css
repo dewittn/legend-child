@@ -101,15 +101,3 @@
     box-shadow: 0 0 4px #888;
     z-index: 9999999999;
 }
-
-.post p {
-    display: none;
-}
-
-.post .blurb-text {
-    display:block;
-}
-
-.post .fa-long-arrow-right{
-    display: block;
-}
