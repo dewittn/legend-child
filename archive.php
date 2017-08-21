@@ -49,7 +49,11 @@ get_header(); ?>
 
 				<div class="post <?php echo esc_attr($post_class); ?> <?php if(!$imgsrc){ ?>noimg <?php } ?>">
 
-					<a href="<?php the_permalink(); ?>" class="dropanchor"></a>
+                    <?php if($custom_url) { ?>
+                        <a href="<?php echo $custom_url; ?>" class="dropanchor"></a>
+                    <?php } else { ?>
+                        <a href="<?php the_permalink(); ?>" class="dropanchor"></a>
+                    <?php } ?>
 
 					<div class="post-snip">
 
