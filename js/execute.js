@@ -26,8 +26,7 @@ $(document).ready(function() {
         }
     
     }
-}
-
+});
 
 function thirty_pc() {
     var height = $(window).height();
@@ -204,10 +203,10 @@ $(document).ready(function()  {
     });
     // $(window).resize(function(){location.reload();});
 	
-	if ($(".theslip")) {
-    	$(".theslip").stick_in_parent({ offset_top: 350,sticky_class : "vislip" });
-	}
-	
+    if ($(".theslip")) {
+        $(".theslip").stick_in_parent({ offset_top: 350,sticky_class : "vislip" });
+    }
+    
 	// NAVIGATION OPEN AND CLOSE
    $(".bar-holster").click(function(e){
     e.preventDefault();
