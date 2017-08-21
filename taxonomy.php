@@ -25,19 +25,22 @@ get_header(); ?>
         <div class="highroll">
 
 				<?php 
-				
-				        $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
-				
-				        if(have_posts()) :
-		       			$postcount=1;
-		      			while(have_posts()) : the_post();
-
-				$imgsrc = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), "blog-posts");
-
-				if( ($postcount % 2) == 0 ) $post_class = 'rightpost';
-		        else $post_class = 'leftpost';
-		        
-				global $wp_query; 
+                    $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+                    
+                    if(have_posts()) :
+                    	$postcount=1;
+                    while(have_posts()) : 
+                        the_post();
+                    
+                    $imgsrc = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), "blog-posts");
+                    
+                    if( ($postcount % 2) == 0 ) 
+                        $post_class = 'rightpost';
+                    else 
+                        $post_class = 'leftpost';
+                    
+                    $custom_url = get_post_meta($post->ID, 'custom_url', $single = true);
+                    global $wp_query; 
 		        ?>
 
 		        

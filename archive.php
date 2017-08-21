@@ -40,10 +40,14 @@ get_header(); ?>
 
 				if ( $misfit_WP_Query->have_posts() ) : while ( $misfit_WP_Query->have_posts() ) : $misfit_WP_Query->the_post();
 
-					$imgsrc = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), "blog-posts");
+				$imgsrc = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), "blog-posts");
 
-					if( ($postcount % 2) == 0 ) $post_class = 'rightpost';
-					else $post_class = 'leftpost';
+				if( ($postcount % 2) == 0 ) 
+				    $post_class = 'rightpost';
+				else 
+				    $post_class = 'leftpost';
+					
+				$custom_url = get_post_meta($post->ID, 'custom_url', $single = true);
 
 			?>
 
