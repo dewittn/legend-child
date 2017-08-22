@@ -17,6 +17,8 @@ function child_remove_parent_function() {
     wp_enqueue_script('execute', get_stylesheet_directory_uri() . '/js/execute.js',array('jquery','jquery-sticky-kit'));
     wp_dequeue_script('lightbox');  
     wp_enqueue_script('lightbox', get_stylesheet_directory_uri() . '/js/lightbox.min.js', array('jquery'));
+    wp_dequeue_style('lightbox');
+    wp_enqueue_style('lightbox', get_stylesheet_directory_uri() . '/css/lightbox.css');
     remove_shortcode('video');
     add_shortcode('video', 'modified_scribe_video_sc');
     remove_shortcode('accordion_content');
