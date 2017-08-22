@@ -38,7 +38,7 @@ get_header(); ?>
                                     <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
                                 </a>
                 
-                                <p class="blurb-text">The Mausoleum Club stands on the quietest corner of the best residential street in the City. It is a Grecian building of white stone. About it are great elm trees with birds--the most expensive kind of birds--singing in the branches. The street in the softer hours of the morning has an almost reverential quiet. Great...</p>
+                                <p class="blurb-text">At the age of 16 my life changed forever when I learned that my birth family from El Salvador was searching for me. Waking From Innocent Dreams is an autobiographical novel about my journey to reconnect with the family I had always dreamed of meeting. The book explores the meaning of family and the challenges that come with it.</p>
                             </div><!-- end slip-line -->
                             <a href="https://www.nelsonroberto.com/portfolio/innocent-dreams/" class="std ion-ios-arrow-thin-right"></a>
                         </div><!-- end post-snip -->
