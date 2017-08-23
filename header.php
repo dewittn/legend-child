@@ -25,9 +25,9 @@
 	<link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
 	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="<?php feedburner_url (); ?>" />
 	<?php 
-    	load_primary_stylesheets(); 
-        add_action('wp_footer', 'optimize_homepage');	
-    ?>
+    		load_primary_stylesheets(); 
+        	if ( is_home() ) { add_action('wp_footer', 'optimize_homepage'); }
+    	?>
 	
 	<style type="text/css">
 	    .is_stuck{
