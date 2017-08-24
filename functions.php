@@ -8,18 +8,6 @@ if(is_admin()) {
     require_once(get_stylesheet_directory() .  '/options/options_panel.php');
 }
 
-/*
-function replace_scripts_and_styles() {
-    wp_dequeue_script('execute');
-    wp_enqueue_script('execute', get_stylesheet_directory_uri() . '/js/execute.js',array('jquery','jquery-sticky-kit'));
-    wp_dequeue_script('lightbox');  
-    wp_enqueue_script('lightbox', get_stylesheet_directory_uri() . '/js/lightbox.min.js', array('jquery'));
-    wp_dequeue_style('lightbox');
-    wp_enqueue_style('lightbox', get_stylesheet_directory_uri() . '/css/lightbox.css');
-}
-add_action('wp_footer', 'replace_scripts_and_styles'); 
-*/
-
 function child_remove_parent_function() {
     remove_action('admin_menu', 'misfit_add_admin');
     add_action('admin_menu', 'patched_misfit_add_admin');
