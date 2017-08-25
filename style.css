@@ -129,3 +129,23 @@
     -o-transition: opacity .8s ease !important;
     transition: opacity .8s ease !important;
 }
+
+.fixed-nav li a {
+	text-transform: uppercase;
+	font-family: 'GothamBold';
+	position: relative;
+	top: -8px;
+	font-size: 10px;
+	letter-spacing: 6px;
+	padding: 0 10px;
+	color: #ddd;
+    -webkit-transition: color .4s ease;
+    -moz-transition: color .4s ease;
+    -o-transition: color .4s ease;
+    transition: color .4s ease;
+}
+
+.fixed-nav li a:hover {
+	color: #333;
+}
+

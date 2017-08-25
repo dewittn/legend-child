@@ -54,7 +54,7 @@ function thirty_pc() {
     $(".homevideo").css('height',fully);
     $(".carousello").css('height',sixty);
     $(".totality").css('height',fully);
-    $(".sic .feature-spacer").css('height',50);
+    $(".sic .feature-spacer").css('height',25);
     $(".slidban").css('height',sixty);
     $(".slidbantop").css('height',sixty);
 }
@@ -100,7 +100,6 @@ $(document).ready(function() {
 	thirty_pc();
 	$(window).bind('resize', thirty_pc);
 
-    $(".fixed-nav li a").addClass('whipper');
     var submit = $("#sleek");
     
     function validateEmail(email) {

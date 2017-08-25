@@ -20,19 +20,6 @@ function child_remove_parent_function() {
 }
 add_action( 'wp_loaded', 'child_remove_parent_function' );
 
-function optimize_homepage () {
-//     wp_dequeue_script('jquery-iosslider');
-//     wp_dequeue_script('jquery-touchcarousel');
-    wp_dequeue_script('jquery-sticky-kit');
-    wp_dequeue_script('modernizr');
-    wp_dequeue_script('stick');
-    wp_dequeue_script('lightbox');
-    wp_dequeue_style('lightbox');
-    wp_dequeue_style('bigvideo');
-    wp_dequeue_style('carousel');
-    wp_dequeue_style('jscrollpane');
-}
-
 function custom_myme_types($mime_types){
 
     //Adding epub extension
@@ -101,7 +88,9 @@ function modified_accordion_content_sc( $atts, $content = null ) {
 //.................. Nelson's New Functions .................. //
 
 if ( ! function_exists( 'default_value' ) ) :
-
+/*
+    Checks $var to see if it is empty. If not returns the default value set by $default.
+*/
 function default_value($var, $default) {
     if (empty($var)) {
         $var = $default;
@@ -156,18 +145,133 @@ function get_portfolio_label () {
 }
 endif; // get_portfolio_label ()
 
-if ( ! function_exists( 'get_home_intro' ) ) :
+if ( ! function_exists( 'dequeue_scripts' ) ) :
+/*  */
+function dequeue_scripts () {
+    $scripts = func_get_args();
+    foreach($scripts as $script) {
+        wp_dequeue_script($script);
+    }
+}
+endif; // dequeue_scripts ()
 
+if ( ! function_exists( 'dequeue_styles' ) ) :
+/*  */
+function dequeue_styles () {
+    $styles = func_get_args();
+    foreach($styles as $style) {
+        wp_dequeue_style($style);
+    }
+}
+endif; // dequeue_styles ()
+
+if ( ! function_exists( 'load_single_resources' ) ) :
+    function load_single_resources () {
+        //Remove Unecisary resources   
+        dequeue_scripts('modernizr','stick','lightbox');
+        dequeue_styles('lightbox','bigvideo','carousel','jscrollpane');
+    }
+endif; // load_single_resources ()
+
+if ( ! function_exists( 'load_slider_resources' ) ) :
+    function load_slider_resources(){
+        //Remove Unecisary resources        
+        dequeue_scripts('modernizr','stick','lightbox');
+        dequeue_styles('lightbox','bigvideo','carousel','jscrollpane');
+        
+        // Load supersied JS and CSS
+        echo '<!-- Fullscreen Slider -->';
+	    wp_enqueue_style('supersized', get_template_directory_uri() . '/css/supersized.css');
+	    wp_enqueue_style('shutter', get_template_directory_uri() . '/css/supersized.shutter.css');
+        wp_enqueue_script('supersized', get_url_for('/js/supersized.3.2.7.min.js'));
+        wp_enqueue_script('supersized-shutter', get_url_for('/js/supersized.shutter.min.js'));
+        wp_enqueue_script('images', get_url_for('/js/images.js'), array('supersized','supersized-shutter'));
+        
+        // Set options for Superized slider
+        $supersize_option = get_option('misfit_slidertransitions');
+        
+        switch ($supersize_option) {
+            case 'Slide Top':
+                $supersize_num = 2;
+                break;
+            case 'Slide Right':
+                $supersize_num = 3;
+                break;
+            case 'Slide Bottom':
+                $supersize_num = 4;
+                break;
+            case 'Slide Left':
+                $supersize_num = 5;
+                break;
+            case 'Carousel Right':
+                $supersize_num = 6;
+                break;
+            case 'Carousel Left':
+                $supersize_num = 7;
+                break;
+            default:
+                $supersize_num = 1;
+        }
+        
+        $pagename = get_option('misfit_sliderpage');
+        $page = get_page_by_title($pagename);
+        $featured_id =  $page->ID;
+        $image_arry = array();
+        
+        $misfit_WP_Args = array(
+        	'post_type' => 'page',
+        	'p' => $featured_id,
+        	'posts_per_page' => -1,
+        	'no_found_rows' => true,
+        	'update_post_term_cache' => false,
+        );
+        $misfit_WP_Query = new WP_Query( $misfit_WP_Args );
+        
+        if ( $misfit_WP_Query->have_posts() ) : 
+        
+            while ( $misfit_WP_Query->have_posts() ) : 
+                $misfit_WP_Query->the_post();
+        
+            	$galleryImages = misfit_themes_get_post_gallery_imagess(); 
+            	$imagesCount = count($galleryImages);
+            
+                if ($imagesCount > 0) {
+                	for ($i = 0; $i < $imagesCount; $i++) {
+                		if (!empty($galleryImages[$i])) {
+                			$img_full = $galleryImages[$i]['full'][0];
+                			$posts = get_post($galleryImages[$i]['id']);
+                            array_push($image_arry, array('image' => $img_full, 'title' => '<h4>'.$posts->post_content.'</h4><h1>'.$post->post_excerpt.'</h1>', 'thumb' => '', 'url' => '') );
+                		}
+                	} 
+                } 
+            endwhile; 
+            wp_reset_postdata(); 
+        endif;
+        
+        // Pass options onto JS as CDATA embed into page
+        wp_localize_script( 'images', 'js_data', array('supersize_num' => $supersize_num, 'images' => $image_arry ) );
+    }
+endif; // load_slider_resources ()
+
+
+if ( ! function_exists( 'get_home_intro' ) ) :
+/*
+    Loads resources and template part for each home page type 
+*/
 function get_home_intro () {
     $hometype = get_option('misfit_hometype');
     switch ($hometype) {
         case "1": // Single Image
+            add_action('wp_footer', 'load_single_resources');
             get_template_part ('/library/home_variations/home', 'single_image');
             break;
         case "2": // Slider 
+//             if( (is_home() && get_option('misfit_hometype') == "2") || ( is_page() && is_page_template('hp_slide.php') ) )
+            add_action('wp_footer', 'load_slider_resources');
             get_template_part ('/library/home_variations/home', 'slider');
             break;
-        case "3": // Video 
+        case "3": // Video
+            
             get_template_part ('/library/home_variations/home', 'video');
             break;
         case "4": // Single Page
@@ -240,12 +344,6 @@ function load_stylesheets () {
     wp_enqueue_style('bigvideo', get_template_directory_uri() . '/css/bigvideo.css');
     wp_enqueue_style('jscrollpane', get_template_directory_uri() . '/css/jquery.jscrollpane.css');
         
-    if(is_home() && get_option('misfit_hometype') == "2" || is_page_template('hp_slide.php') ) { 
-        echo '<!-- Fullscreen Slider -->';
-	    wp_enqueue_style('supersized', get_template_directory_uri() . '/css/supersized.css');
-	    wp_enqueue_style('shutter', get_template_directory_uri() . '/css/supersized.shutter.css');
-	}
-    
 	echo '<!-- responsive style -->';
     wp_enqueue_script('modernizr', get_template_directory_uri() . '/js/modernizr.custom.js');
     
@@ -261,7 +359,7 @@ endif; // load_stylesheets ()
 
 if ( ! function_exists( 'load_primary_stylesheets' ) ) :
 /*
-    This functions places style.css and media.css at the top of the page so that the site does not look broken while it loads.
+    This functions places style.css and media.css at the top of the page so that the site does not look broken while it loads. All other styles and scripts can be loaded later.
 */
 function load_primary_stylesheets () {
     wp_enqueue_style( 'style', get_stylesheet_uri() ); 
@@ -281,27 +379,30 @@ function feedburner_url () {
 }
 endif; // feedburner_url ()
 
-function get_url_for($file_to_check) {
-    if ( file_exists( get_stylesheet_directory() . $file_to_check ) ) :
-        return get_stylesheet_directory_uri() . $file_to_check;
-    else :
-        return get_template_directory_uri() . $file_to_check;
-    endif;
-}
+
+if ( ! function_exists( 'get_url_for' ) ) :
+/* 
+    Checks the child theme folder to see if an updated file is aviable. If not it will return the default file from the Legend theme.    
+ */
+    function get_url_for($file_to_check) {
+        if ( file_exists( get_stylesheet_directory() . $file_to_check ) ) :
+            return get_stylesheet_directory_uri() . $file_to_check;
+        else :
+            return get_template_directory_uri() . $file_to_check;
+        endif;
+    }
+endif;
 
 if ( ! function_exists( 'footer_setup' ) ) :
-/*  */
+/* 
+    Setups the footer with all the styles and scripts needed for the Misfit Legend Theme.    
+ */
 function footer_setup () {
 
     get_template_part ('library/mobile-nav');
     wp_enqueue_script ('preloader', get_url_for('/js/preloader.js'));
     wp_enqueue_script ('jquery');    
-    
-    if( (is_home() && get_option('misfit_hometype') == "2") || ( is_page() && is_page_template('hp_slide.php') ) ) { 
-        wp_enqueue_script('supersized', get_url_for('/js/supersized.3.2.7.min.js'));
-        wp_enqueue_script('supersized-shutter', get_url_for('/js/supersized.shutter.min.js'));
-		get_template_part ('library/images');
-    }
+
     if ( is_home() && get_option('misfit_hometype') == "3" || is_page_template('hp_vid.php') ) { 
         get_template_part('library/home-video');
     }
