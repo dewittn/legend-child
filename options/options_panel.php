@@ -1,5 +1,5 @@
 <?php
-// Nelson's Patched version
+// Nelson's Patched Options Panel 
 
 
 

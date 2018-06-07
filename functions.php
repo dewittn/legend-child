@@ -3,11 +3,12 @@
 
 /**  Add Your Functions Below **/
 
-/* Include Super Furu Custom Options Panel*/
+/* Include Nelson's Patched Options Panel */
 if(is_admin()) {
     require_once(get_stylesheet_directory() .  '/options/options_panel.php');
 }
 
+// Unload theme functions and load modified versions
 function child_remove_parent_function() {
     remove_action('admin_menu', 'misfit_add_admin');
     add_action('admin_menu', 'patched_misfit_add_admin');
@@ -20,6 +21,8 @@ function child_remove_parent_function() {
 }
 add_action( 'wp_loaded', 'child_remove_parent_function' );
 
+
+// Custom Myme Type to allow .epub files
 function custom_myme_types($mime_types){
 
     //Adding epub extension
@@ -30,10 +33,12 @@ function custom_myme_types($mime_types){
 
 add_filter('upload_mimes', 'custom_myme_types', 1, 1);
 
-/* -------------------------------------------------- */
-/*	Video Embed
-/* -------------------------------------------------- */
 
+
+/* -------------------------------------------------- */
+/*	Modified Video Embed
+/* -------------------------------------------------- */
+// Video embeds now loads using https requests
 
 function modified_scribe_video_sc( $atts, $content = null ) {
 
@@ -61,9 +66,10 @@ function modified_scribe_video_sc( $atts, $content = null ) {
 
 
 /* -------------------------------------------------- */
-/*	Accordion Content
+/*	Modified Accordion Content
 /* -------------------------------------------------- */
 
+// Removed extra <div> element form Accordion content, that was causing layout issues
 function modified_accordion_content_sc( $atts, $content = null ) {
 
 	extract( shortcode_atts( array(
@@ -73,10 +79,10 @@ function modified_accordion_content_sc( $atts, $content = null ) {
 		'mode'       => ''
 	), $atts ) );
 
-    $output = '<ul id="toggle-view"><li><h3>';
+  $output = '<ul id="toggle-view"><li><h3>';
     
-    if( $icon )
-        $output .= '<i class="fa '. esc_attr( $icon )  .'" aria-hidden="true"></i> ';
+  if( $icon )
+      $output .= '<i class="fa '. esc_attr( $icon )  .'" aria-hidden="true"></i> ';
 
 	$output .=  esc_attr( $title ) . '</h3><div class="panel"><p>' . do_shortcode( $content ) . '<p></div></li></ul>';
 	
@@ -88,65 +94,67 @@ function modified_accordion_content_sc( $atts, $content = null ) {
 //.................. Nelson's New Functions .................. //
 
 if ( ! function_exists( 'default_value' ) ) :
-/*
-    Checks $var to see if it is empty. If not returns the default value set by $default.
-*/
-function default_value($var, $default) {
-    if (empty($var)) {
-        $var = $default;
-    } 
-    return $var;
-}
+  /*
+    Checks a string passed to it, usually a database settind, to see if it is empty. 
+    If the string is empty the '$default' value is returned.    
+  */
+  function default_value($var, $default) {
+      if (empty($var)) {
+          $var = $default;
+      } 
+      return $var;
+  }
 endif; // default_value ()
 
 if ( ! function_exists( 'get_home_body' ) ) :
-/*
-
-*/
-function get_home_body () {
-    
-	$std = default_value(get_option('misfit_sections'), "Blog,Content,Portfolio");
-    $saved_sections = explode(',', $std);
-    foreach ($saved_sections as $value) {
-    	switch ($value) {
-    
-    		case "Blog":
-    			//  home blog
-    			get_template_part( 'library/home', 'blog' );
-    			echo '<!-- Blog Section -->';
-    		break;
-    
-    		case "Content":
-    
-    			// home content
-    			if( 'true' == get_option('misfit_showpage') ) {
-        			get_template_part( 'library/home', 'content' );
-    			}
-    
-    		break;
-    
-    		case "Portfolio":
-    			// home portfolio
-    			$ports = get_page_with_template('page_portfolio');
-    		        
-    			if( 'true' == get_option('misfit_showport') ) {
-        			get_template_part( 'library/home', 'portfolio' );
-    			}
-    			
-    		break;
-    	}
-    }
-}
+  /*
+    Replaces the code that generates the Home Body sections
+  */
+  function get_home_body () {
+      
+  	$std = default_value(get_option('misfit_sections'), "Blog,Content,Portfolio");
+      $saved_sections = explode(',', $std);
+      foreach ($saved_sections as $value) {
+      	switch ($value) {
+      
+      		case "Blog":
+      			//  home blog
+      			get_template_part( 'library/home', 'blog' );
+      			echo '<!-- Blog Section -->';
+      		break;
+      
+      		case "Content":
+      
+      			// home content
+      			if( 'true' == get_option('misfit_showpage') ) {
+          			get_template_part( 'library/home', 'content' );
+      			}
+      
+      		break;
+      
+      		case "Portfolio":
+      			// home portfolio
+      			$ports = get_page_with_template('page_portfolio');
+      		        
+      			if( 'true' == get_option('misfit_showport') ) {
+          			get_template_part( 'library/home', 'portfolio' );
+      			}
+      			
+      		break;
+      	}
+      }
+  }
 endif; // get_home_body ()
 
 if ( ! function_exists( 'get_portfolio_label' ) ) :
-function get_portfolio_label () {
-    echo default_value(get_option('misfit_showlabel'), "Portfolio");
-}
+  // Returns the portfolio_label text
+  function get_portfolio_label () {
+      echo default_value(get_option('misfit_showlabel'), "Portfolio");
+  }
 endif; // get_portfolio_label ()
 
 if ( ! function_exists( 'dequeue_scripts' ) ) :
-/*  */
+/* Deregisters multiple scripts */
 function dequeue_scripts () {
     $scripts = func_get_args();
     foreach($scripts as $script) {
@@ -156,7 +164,7 @@ function dequeue_scripts () {
 endif; // dequeue_scripts ()
 
 if ( ! function_exists( 'dequeue_styles' ) ) :
-/*  */
+/* Deregisters multiple stylesheets */
 function dequeue_styles () {
     $styles = func_get_args();
     foreach($styles as $style) {
@@ -166,16 +174,17 @@ function dequeue_styles () {
 endif; // dequeue_styles ()
 
 if ( ! function_exists( 'load_single_resources' ) ) :
+    //Remove unnecessary resources from home page type 'single'
     function load_single_resources () {
-        //Remove Unecisary resources   
         dequeue_scripts('modernizr','stick','lightbox');
         dequeue_styles('lightbox','bigvideo','carousel','jscrollpane');
     }
 endif; // load_single_resources ()
 
 if ( ! function_exists( 'load_slider_resources' ) ) :
+    //Removes & loads resources for home page type 'single'
     function load_slider_resources(){
-        //Remove Unecisary resources        
+        //Remove unnecessary resources
         dequeue_scripts('modernizr','stick','lightbox');
         dequeue_styles('lightbox','bigvideo','carousel','jscrollpane');
         
@@ -213,6 +222,7 @@ if ( ! function_exists( 'load_slider_resources' ) ) :
                 $supersize_num = 1;
         }
         
+        // Image data for slider gets embeded into the page using CDATA, eliminating the need to make a second php DB call after page has loaded
         $pagename = get_option('misfit_sliderpage');
         $page = get_page_by_title($pagename);
         $featured_id =  $page->ID;
@@ -294,96 +304,102 @@ function get_home_intro () {
 endif; // get_home_intro ()
 
 if ( ! function_exists( 'feature_img_url' ) ) :
-function feature_img_url () {
-    if(get_option('misfit_single_image')) { 
-        echo esc_url(get_option('misfit_single_image')); 
-    } else { 
-        get_parent_theme_file_path ('/images/bans/23.jpg');
-    }
-}
+  // Returns the feature image URL
+  function feature_img_url () {
+      if(get_option('misfit_single_image')) { 
+          echo esc_url(get_option('misfit_single_image')); 
+      } else { 
+          get_parent_theme_file_path ('/images/bans/23.jpg');
+      }
+  }
 endif; // feature_img_url ()
 
 if ( ! function_exists( 'include_banner' ) ) :
-function include_banner () {
-    global $post;
-    $page_type = get_post_meta($post->ID, 'misfit_pagetype', true);
-    switch ($page_type) {
-        case "Top Banner":
-        case "Top Banner w/Side(R)":
-        case "Top Banner w/Side(L)":
-        case "Top Banner w/Full(R)":
-        case "Top Banner w/Full(L)":
-            get_template_part ('library/banner');
-            break;
-    }
-}
+  function include_banner () {
+      global $post;
+      $page_type = get_post_meta($post->ID, 'misfit_pagetype', true);
+      switch ($page_type) {
+          case "Top Banner":
+          case "Top Banner w/Side(R)":
+          case "Top Banner w/Side(L)":
+          case "Top Banner w/Full(R)":
+          case "Top Banner w/Full(L)":
+              get_template_part ('library/banner');
+              break;
+      }
+  }
 endif; // include_banner ()
 
 if ( ! function_exists( 'custom_preloader' ) ) :
-function custom_preloader () {
-    if(get_option('misfit_custom_preloader')) { 
-        echo 'style="background-image: url(', esc_url(get_option('misfit_custom_preloader')),')'; 
-    }
-}
+  // Returns the custome preloader URL
+  function custom_preloader () {
+      if(get_option('misfit_custom_preloader')) { 
+          echo 'style="background-image: url(', esc_url(get_option('misfit_custom_preloader')),')'; 
+      }
+  }
 endif; // custom_preloader ()
 
-if ( ! function_exists( 'load_stylesheets' ) ) :
-/*
-    This function adds the rest of the stylesheets into wp_head(), allowing them to be optimized by wordpress.
-*/
-function load_stylesheets () {
-    
-    echo '<!-- fonts style -->';
-    wp_enqueue_style('fonts', get_template_directory_uri() . '/css/fonts.css');
-    wp_enqueue_style('font-awesome', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css');
-    wp_enqueue_style('wpb-google-fonts', 'https://fonts.googleapis.com/css?family=Playfair+Display:400,400italic,700,900|Open+Sans%3A300italic%2C400italic%2C600italic%2C300%2C400%2C600&subset=latin%2Clatin-ext');    
-    
-    echo '<!-- dependent styles -->';
-    wp_enqueue_style('lightbox', get_template_directory_uri() . '/css/lightbox.css');
-    wp_enqueue_style('carousel', get_template_directory_uri() . '/css/carousel.css');
-    wp_enqueue_style('bigvideo', get_template_directory_uri() . '/css/bigvideo.css');
-    wp_enqueue_style('jscrollpane', get_template_directory_uri() . '/css/jquery.jscrollpane.css');
-        
-	echo '<!-- responsive style -->';
-    wp_enqueue_script('modernizr', get_template_directory_uri() . '/js/modernizr.custom.js');
-    
-    /****************** DO NOT REMOVE **********************
-    /* We add some JavaScript to pages with the comment form
-    * to support sites with threaded comments (when in use).
-    */
-    if ( is_singular() && get_option( 'thread_comments' ) )
-        wp_enqueue_script( 'comment-reply' );
-}
-add_action('wp_head', 'load_stylesheets');
-endif; // load_stylesheets ()
-
 if ( ! function_exists( 'load_primary_stylesheets' ) ) :
-/*
-    This functions places style.css and media.css at the top of the page so that the site does not look broken while it loads. All other styles and scripts can be loaded later.
-*/
-function load_primary_stylesheets () {
-    wp_enqueue_style( 'style', get_stylesheet_uri() ); 
-    // Changed to use child theme media.css
-    wp_enqueue_style('misfit-media', get_stylesheet_directory_uri() . '/css/media.css');
-}
+  /*
+    Places style.css and media.css at the top of the page so that .preloader works poperly. 
+    All other styles and scripts can be loaded later.
+  */
+  function load_primary_stylesheets () {
+      wp_enqueue_style( 'style', get_stylesheet_uri() ); 
+      // Changed to use child theme media.css
+      wp_enqueue_style('misfit-media', get_stylesheet_directory_uri() . '/css/media.css');
+  }
 endif; // load_primary_stylesheets ()
 
+if ( ! function_exists( 'load_stylesheets' ) ) :
+  /*
+    Registers all stylesheets and JS files not included in load_primary_stylesheets(), so they can be optimized by wordpress.
+  */
+  function load_stylesheets () {
+      
+      echo '<!-- fonts style -->';
+      wp_enqueue_style('fonts', get_template_directory_uri() . '/css/fonts.css');
+      wp_enqueue_style('font-awesome', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css');
+      wp_enqueue_style('wpb-google-fonts', 'https://fonts.googleapis.com/css?family=Playfair+Display:400,400italic,700,900|Open+Sans%3A300italic%2C400italic%2C600italic%2C300%2C400%2C600&subset=latin%2Clatin-ext');    
+      
+      echo '<!-- dependent styles -->';
+      wp_enqueue_style('lightbox', get_template_directory_uri() . '/css/lightbox.css');
+      wp_enqueue_style('carousel', get_template_directory_uri() . '/css/carousel.css');
+      wp_enqueue_style('bigvideo', get_template_directory_uri() . '/css/bigvideo.css');
+      wp_enqueue_style('jscrollpane', get_template_directory_uri() . '/css/jquery.jscrollpane.css');
+          
+      echo '<!-- responsive style -->';
+      wp_enqueue_script('modernizr', get_template_directory_uri() . '/js/modernizr.custom.js');
+      
+      /****************** DO NOT REMOVE **********************
+      /* We add some JavaScript to pages with the comment form
+      * to support sites with threaded comments (when in use).
+      */
+      if ( is_singular() && get_option( 'thread_comments' ) )
+          wp_enqueue_script( 'comment-reply' );
+  }
+  add_action('wp_head', 'load_stylesheets');
+endif; // load_stylesheets ()
+
+
 if ( ! function_exists( 'feedburner_url' ) ) :
-/*  */
-function feedburner_url () {
-    if ( get_option('misfit_feedburner_url') <> "" ) { 
-        echo get_option('misfit_feedburner_url'); 
-    } else { 
-        echo get_bloginfo_rss('rss2_url'); 
-    }
-}
+  /* Returns feedburner URL */
+  function feedburner_url () {
+      if ( get_option('misfit_feedburner_url') <> "" ) { 
+          echo get_option('misfit_feedburner_url'); 
+      } else { 
+          echo get_bloginfo_rss('rss2_url'); 
+      }
+  }
 endif; // feedburner_url ()
 
 
 if ( ! function_exists( 'get_url_for' ) ) :
 /* 
-    Checks the child theme folder to see if an updated file is aviable. If not it will return the default file from the Legend theme.    
- */
+  Checks the child theme folder to see if an updated file is aviable.
+  If not, the default file from the Legend theme is returned.
+  Allows all stylesheets and JS files to be easily modified.
+*/
     function get_url_for($file_to_check) {
         if ( file_exists( get_stylesheet_directory() . $file_to_check ) ) :
             return get_stylesheet_directory_uri() . $file_to_check;
@@ -394,34 +410,34 @@ if ( ! function_exists( 'get_url_for' ) ) :
 endif;
 
 if ( ! function_exists( 'footer_setup' ) ) :
-/* 
+  /* 
     Setups the footer with all the styles and scripts needed for the Misfit Legend Theme.    
- */
-function footer_setup () {
-
-    get_template_part ('library/mobile-nav');
-    wp_enqueue_script ('preloader', get_url_for('/js/preloader.js'));
-    wp_enqueue_script ('jquery');    
-
-    if ( is_home() && get_option('misfit_hometype') == "3" || is_page_template('hp_vid.php') ) { 
-        get_template_part('library/home-video');
-    }
-    if ( get_option('misfit_instagramid') ) { get_template_part ('library/insta'); }
-    if ( get_option('misfit_consumer_key') ) { get_template_part ('library/tweets'); }
-    if ( is_page_template('page_cs.php') ) { get_template_part ('library/countdown'); } 
-    
-    wp_enqueue_script('jquery-iosslider', get_url_for('/js/jquery.iosslider.js'));
-    wp_enqueue_script('view', get_url_for('/js/view.js'));
-    wp_enqueue_script('lightbox', get_url_for('/js/lightbox.min.js'));
-    wp_enqueue_script('execute', get_stylesheet_directory_uri() . '/js/execute.js',array('jquery','jquery-sticky-kit'));
-    wp_enqueue_script('jquery-touchcarousel', get_url_for('/js/jquery.touchcarousel-1.2.js'));
-    wp_enqueue_script('jquery-sticky-kit', get_url_for('/js/jquery.sticky-kit.js'));
-    wp_enqueue_script('stick', get_url_for('/js/stick.js'));
-    
-//     if (is_home() && get_option('misfit_hometype') == "1") { wp_enqueue_script('main', get_template_directory_uri() . '/js/main.js'); }
-    if ( get_option('misfit_tracking_code') <> "" ) { echo stripslashes(get_option('misfit_tracking_code')); }
-}
-add_action('wp_footer', 'footer_setup');
+  */
+  function footer_setup () {
+  
+      get_template_part ('library/mobile-nav');
+      wp_enqueue_script ('preloader', get_url_for('/js/preloader.js'));
+      wp_enqueue_script ('jquery');    
+  
+      if ( is_home() && get_option('misfit_hometype') == "3" || is_page_template('hp_vid.php') ) { 
+          get_template_part('library/home-video');
+      }
+      if ( get_option('misfit_instagramid') ) { get_template_part ('library/insta'); }
+      if ( get_option('misfit_consumer_key') ) { get_template_part ('library/tweets'); }
+      if ( is_page_template('page_cs.php') ) { get_template_part ('library/countdown'); } 
+      
+      wp_enqueue_script('jquery-iosslider', get_url_for('/js/jquery.iosslider.js'));
+      wp_enqueue_script('view', get_url_for('/js/view.js'));
+      wp_enqueue_script('lightbox', get_url_for('/js/lightbox.min.js'));
+      wp_enqueue_script('execute', get_stylesheet_directory_uri() . '/js/execute.js',array('jquery','jquery-sticky-kit'));
+      wp_enqueue_script('jquery-touchcarousel', get_url_for('/js/jquery.touchcarousel-1.2.js'));
+      wp_enqueue_script('jquery-sticky-kit', get_url_for('/js/jquery.sticky-kit.js'));
+      wp_enqueue_script('stick', get_url_for('/js/stick.js'));
+      
+  //     if (is_home() && get_option('misfit_hometype') == "1") { wp_enqueue_script('main', get_template_directory_uri() . '/js/main.js'); }
+      if ( get_option('misfit_tracking_code') <> "" ) { echo stripslashes(get_option('misfit_tracking_code')); }
+  }
+  add_action('wp_footer', 'footer_setup');
 endif; // footer_setup ()
 
 ?>
